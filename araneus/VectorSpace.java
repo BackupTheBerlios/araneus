@@ -63,7 +63,7 @@ public class VectorSpace {
         String[] tableau    = (tousLesDocuments.toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
       
         // On crée un nouvel objet de type Vector
-        Vector listeMot = new Vector();
+        Vector listeMot = new Vector(tableau.length/2);
 
         // On parcours la liste des mots de la liste
         for (int i = 0; i < tableau.length; i++) {
@@ -182,7 +182,8 @@ public class VectorSpace {
         
         // On parcours la liste des vecteurs de documents
         for (int i = 0; i < this.listeDocument.size(); i++) {
-            System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i)));
+            cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i));
+            //System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i)));
         }
     }
 }
