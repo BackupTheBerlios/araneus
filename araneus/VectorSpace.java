@@ -1,11 +1,44 @@
+/**
+ *  Copyright 2004 Fabien SCHWOB
+ *  
+ *  This file is part of Araneus.
+ *
+ *  Araneus is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Araneus is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Araneus; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/**
+ *  Importation des packages nécessaires
+ */
 import java.util.Vector;
 
+/**
+ * Essaie d'implementation de l'article sur "Vector Space"
+ *
+ * @author  Fabien SCHWOB
+ * @version 0.1
+ */
 public class VectorSpace {
-    public static void main(String[] args) {
+    
+    private Vector espaceMot;
+    private Vector listeDocument;
+    
+    public VectorSpace() {
 
         // On définit un certain nombres de documents
         String doc1 = "Il s'agit d'un système assez ésotérique permettant de mesurer la qualité d'une équipe de développeurs.";
-        String doc2 = "Et avec tout le temps que vous y gagnez, vous pouvez faire plein d'autres choses.";
+        String doc2 = "Et avec tout le temps que vous y gagnez, vous pouvez faire plein d'autres choses en même temps.";
         String doc3 = "le le le Ils réalisèrent que les chefs de projet avaient tant insisté sur le respect du \"planning\" que les programmeurs se contentaient de se dépêcher en écrivant du très mauvais code, parce que la phase de  correction ne faisait pas partie intégrante du planning.";
 
         // On mets dans un tableau la liste des mots
@@ -19,15 +52,16 @@ public class VectorSpace {
 
         // On parcours la liste des mots de la liste
         for (int i = 0; i < tableau.length; i++) {
-            // Si le mot n'existe pas encore dans le Vector, on l'ajoute
-            if (motStop(tableau[i])) {
+            // Si le mot n'existe pas encore dans le Vector, et qu'il
+            //n'est pas un mot "stop" on l'ajoute
+            if (!estMotCourant(tableau[i])) {
                 if (!listeMot.contains(tableau[i]))
                 {
                     listeMot.addElement(tableau[i]);
                 }
             }
         }
-        
+        this.espaceMot = listeMot;
         // On affiche la liste des éléments du Vector
         for (int i = 0; i < listeMot.size(); i++) {
             System.out.println(listeMot.elementAt(i));
@@ -35,33 +69,17 @@ public class VectorSpace {
         System.out.println("--- \n"+listeMot.size()+" mots");
     }
     
-    /**
-     * Trie un tableau de Strind dans l'ordre alpha (hors accent et
-     * caractères spéciaux. Utile pour visualisé l'elimination effective
-     * des mots en doublons.
-     */
-    private static String[] trierAplha(String[] tableau)
+    public void ajouterDocument()
     {
-        boolean permute;
-        String temp;
-        do
-        {
-            permute = false;
-            for (int i = 0; i < (tableau.length - 1); i++) {
-                if ((tableau[i].compareTo(tableau[i + 1])) > 0)
-                {
-                        permute = true;
-                        temp = tableau[i]
-                               ;
-                        tableau[i] = tableau[i + 1];
-                        tableau[i + 1] = temp;
-                }
-            }
-        } while (permute == true);    
-        return tableau;
+        
     }
     
-    private static boolean motStop(String mot)
+    public void calculerVectorSpace()
+    {
+            
+    }
+    
+    private boolean estMotCourant(String mot)
     {
         // On définit les "stop word"
         
@@ -97,10 +115,47 @@ public class VectorSpace {
         for (int j = 0; j<stop.length; j++) {
             if (mot.equals(stop[j]))
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
                 
+    }
+    
+    public int[] creerVecteur(String chaine)
+    {
+        int[] document = new int[this.espaceMot.size()];
+        // on parcourt la chaine de base
+            //pour chaque mot, si le mot existe dans la liste des mots 
+                //on ajouter 1 dans le vecteur
+        String[] motDocument = chaine.toLowerCase().split("(\\s+|[ ,?.;:/!']+)");
+        int temp;
+        for (int i = 0; i < motDocument.length; i++) {
+            if (this.espaceMot.contains(motDocument[i])) {
+                temp = this.espaceMot.indexOf(motDocument[i]);
+                document[temp] = (document[temp])+1;
+            }
+        }
+        return document;
+    }
+    
+    public double norme(int[] vecteur)
+    {
+        int somme = 0;
+        for (int i = 0; i < vecteur.length; i++) {
+            somme = somme + (int) Math.pow((double)vecteur[i], (double)2);
+        }
+        return Math.sqrt(somme);
+    }
+    
+    public double cosinus(int[] v1, int[] v2)
+    {
+        // cosinus = (V1.V2) / (||V1|| . ||V2||)
+        // u.v  = x x' + y y' + zz'
+        int somme = 0;
+        for (int i = 0; i < v1.length; i++) {
+            somme += (v1[i]*v2[i]);
+        }
+        return (somme/(this.norme(v1)*this.norme(v2)));
     }
 }
