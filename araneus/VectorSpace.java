@@ -21,7 +21,10 @@
 /**
  *  Importation des packages nécessaires
  */
+import java.util.ArrayList;
 import java.util.Vector;
+import java.util.HashSet;
+import java.util.Date;
 
 /**
  * Essaie d'implementation de l'article sur "Vector Space"
@@ -32,12 +35,16 @@ import java.util.Vector;
 public class VectorSpace {
     
     private Vector espaceMot;
-    private Vector listeDocument;
-    private Vector listeVecteur;
+    private ArrayList listeDocument;
+    private ArrayList listeVecteur;
+    private Date temps;
+    private long tps1, tps2, tps3, tps4;
     
     public VectorSpace() {
         // On initialise le vecteur contenant la liste des documents
-        this.listeDocument = new Vector(50);
+        this.listeDocument = new ArrayList(1600);
+        this.temps = new Date();
+        tps1 = temps.getTime();
     }
 
     /**
@@ -45,7 +52,7 @@ public class VectorSpace {
      */
     public void ajouterDocument(String document)
     {
-        this.listeDocument.addElement(document);
+        this.listeDocument.add(document);
     }
     
     /**
@@ -53,38 +60,51 @@ public class VectorSpace {
      */
     public void calculerVectorSpace()
     {
+        // Bench
+        this.temps = new Date();
+        tps2 = temps.getTime();
+        System.out.println("Bench : "+(tps2-tps1)+" milliseconds. (Fin ajout doc, debut calcul vector");
+        
         // On récupère le contenu de tous les documents 
-        String tousLesDocuments = "";
+        StringBuffer tousLesDocuments = new StringBuffer();
         for (int i = 0; i < this.listeDocument.size(); i++) {
-            tousLesDocuments += this.listeDocument.elementAt(i);
+            tousLesDocuments.append(this.listeDocument.get(i));
         }
         
         // On mets dans un tableau la liste des mots
-        String[] tableau    = (tousLesDocuments.toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
-      
+        String[] tableau    = (tousLesDocuments.toString().toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
+        tousLesDocuments = null;    // Permet plus ou moins de dire au GarbageCOllector de supprimer l'objet de la memoire
         // On crée un nouvel objet de type Vector
-        Vector listeMot = new Vector(tableau.length/2);
+        HashSet listeMot = new HashSet(tableau.length/2);
 
         // On parcours la liste des mots de la liste
         for (int i = 0; i < tableau.length; i++) {
             // Si le mot n'existe pas encore dans le Vector, et qu'il
             // n'est pas un mot courant on l'ajoute
             if (!estMotCourant(tableau[i])) {
-                if (!listeMot.contains(tableau[i]))
-                {
-                    listeMot.addElement(tableau[i]);
-                }
+                listeMot.add(tableau[i]);
             }
         }
-        this.espaceMot = listeMot;        
+        this.espaceMot = new Vector (listeMot.size());
+        this.espaceMot.copyInto(listeMot.toArray());
+        
+        // Bench
+        this.temps = new Date();
+        tps3 = temps.getTime();
+        System.out.println("Bench : "+(tps3-tps2)+" milliseconds. (fin calcul vector, debut vecteur document");
         
         // On crée un recepteur pour les vecteurs des documents
-        this.listeVecteur = new Vector(this.listeDocument.size());
+        this.listeVecteur = new ArrayList(this.listeDocument.size());
         
         // On crée maintenant des vecteurs pour chacun des documents
         for (int i = 0; i < this.listeDocument.size(); i++) {
-            this.listeVecteur.insertElementAt(creerVecteur( (String) this.listeDocument.elementAt(i)), i);
+            this.listeVecteur.add(i, creerVecteur( (String) this.listeDocument.get(i)));
         }
+        
+        // Bench
+        temps = new Date();
+        tps4 = temps.getTime();
+        System.out.println("Bench : "+(tps4-tps3)+" milliseconds. (Fin calcul vector");
     }
     
     /**
@@ -182,7 +202,7 @@ public class VectorSpace {
         
         // On parcours la liste des vecteurs de documents
         for (int i = 0; i < this.listeDocument.size(); i++) {
-            cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i));
+            cosinus(vecteurRequete, (int[])this.listeVecteur.get(i));
             //System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i)));
         }
     }
