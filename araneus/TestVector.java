@@ -30,12 +30,13 @@ public class TestVector
         
         test.calculerVectorSpace();
         
-        int[] doc = test.creerVecteur("Et avec tout le temps que vous y gagnez, vous pouvez faire plein temps d'autres choses.");
-        int[] doc2 = test.creerVecteur("bonjour, je suis fabien temps");
+        /*int[] doc = test.creerVecteur("Et avec tout le temps que vous y gagnez, vous pouvez faire plein temps d'autres choses.");
+        int[] doc2 = test.creerVecteur("bonjour, je suis fabien temps");*/
         /*for (int i = 0; i < doc.length; i++) {
             System.out.print(doc[i]+", ");
         }*/
         /*System.out.println(test.norme(doc));*/
-        System.out.println(test.cosinus(doc, doc2));
+       // System.out.println(test.cosinus(doc, doc2));
+       test.recherche("qualité du planning");
     }
 }

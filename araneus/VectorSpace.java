@@ -33,6 +33,7 @@ public class VectorSpace {
     
     private Vector espaceMot;
     private Vector listeDocument;
+    private Vector listeVecteur;
     
     public VectorSpace() {
         // On initialise le vecteur contenant la liste des documents
@@ -76,6 +77,14 @@ public class VectorSpace {
             }
         }
         this.espaceMot = listeMot;        
+        
+        // On crée un recepteur pour les vecteurs des documents
+        this.listeVecteur = new Vector(this.listeDocument.size());
+        
+        // On crée maintenant des vecteurs pour chacun des documents
+        for (int i = 0; i < this.listeDocument.size(); i++) {
+            this.listeVecteur.insertElementAt(creerVecteur( (String) this.listeDocument.elementAt(i)), i);
+        }
     }
     
     /**
@@ -165,5 +174,15 @@ public class VectorSpace {
             somme += (v1[i]*v2[i]);
         }
         return (somme/(this.norme(v1)*this.norme(v2)));
+    }
+    
+    public void recherche(String requete)
+    {
+        int[] vecteurRequete = creerVecteur(requete);
+        
+        // On parcours la liste des vecteurs de documents
+        for (int i = 0; i < this.listeDocument.size(); i++) {
+            System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i)));
+        }
     }
 }
