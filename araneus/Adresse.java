@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Foobar; if not, write to the Free Software
+ *  along with Araneus; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -24,6 +24,21 @@
 import java.net.*;
 import java.io.*;
 
+/**
+ * Une classe représentant un adresse devant être indexer. Elle permet
+ * des opérations comme par exemple le telechargement du code HTML de
+ * l'adresse en question.
+ * <p> 
+ * Exemple d'utilisation :
+ * <p>
+ * <code>
+ *    Adresse exemple = new Adresse("http://www.example.org");
+ *    String source = exemple.telecharger();
+ * </code>
+ *
+ * @author  Fabien SCHWOB
+ * @version 0.1
+ */
 public class Adresse{
     
     private String adresseSite;
@@ -34,6 +49,11 @@ public class Adresse{
         this.adresseSite = adresse;
     }
     
+    /**
+     * Télécharge et retourne le code HTML de l'adresse courante. 
+     *
+     * @return      Le code HTML de l'adresse courante
+     */
     public String telecharger()
     {
         try {
@@ -56,6 +76,11 @@ public class Adresse{
         return this.page;
     }
     
+    /**
+     * Récupère l'adresse encapsuler dans l'objet courant 
+     *
+     * @return      L'URL de l'objet courant
+     */
     public String getAdresse()
     {
         return this.adresseSite;    

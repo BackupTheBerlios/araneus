@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Foobar; if not, write to the Free Software
+ *  along with Araneus; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -23,6 +23,14 @@
  */
 import java.sql.*;
 
+/**
+ * Une classe faisant office de containeur pour la liste des adresses à
+ * traiter par le système. On peut par exemple ajouter ou recupérer une 
+ * adresse grace aux méthodes ajouterAdresse() et recupererAdresse().
+ *
+ * @author  Fabien SCHWOB
+ * @version 0.1
+ */
 public class AdresseATraiter {
     
     private String username = "root";
@@ -42,6 +50,13 @@ public class AdresseATraiter {
         }  
     }
     
+    /**
+     * Ajoute une adresse à la liste des adresses en attente de
+     * traitement. 
+     *
+     * @param  adresse Un objet de type Adresse
+     * @return      Le code HTML de l'adresse courante
+     */
     public void ajouterAdresse(Adresse adresse)
     {
         try {
@@ -72,6 +87,12 @@ public class AdresseATraiter {
         }
     }
     
+    /**
+    * Permet de récupérer la prochaine adresse devant être indexé par le
+    * systeme.
+    *
+    * @return      Objet Adresse
+    */
     public Adresse recupererAdresse()
     {
         try {

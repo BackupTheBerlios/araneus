@@ -17,11 +17,33 @@
  *  along with Araneus; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+public class Page{
+    
+    private String adresse;
+    private String titre;
+    private String contenu;
+    private float indiceDePopularite;
+    
+    // dictionnaire contenant les metas    
+        
+    public Page()
+    {
 
-public class TestAdresse {
-    public static void main(String[] args) {
-        Adresse test = new Adresse("http://www.linuxfr.org");
-        String page = test.telecharger();
-        System.out.println(page);
+    }
+    
+    public void definirAdresse(String adresse)
+    {
+        this.adresse = adresse;    
+    }
+    
+    private void nettoyerPage()
+    {
+        // nettoie this.contenu
+    }
+    
+    public void calculerIndiceDePopularite()
+    {
+        
     }
 }
