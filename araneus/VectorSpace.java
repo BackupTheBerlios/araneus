@@ -38,13 +38,14 @@ public class VectorSpace {
     private ArrayList listeDocument;
     private ArrayList listeVecteur;
     private Date temps;
-    private long tps1, tps2, tps3, tps4;
+    private long tempsPrecedent;
     
     public VectorSpace() {
         // On initialise le vecteur contenant la liste des documents
         this.listeDocument = new ArrayList(1600);
         this.temps = new Date();
-        tps1 = temps.getTime();
+        this.tempsPrecedent = this.temps.getTime();
+        bench("Debut de l'execution");
     }
 
     /**
@@ -60,16 +61,15 @@ public class VectorSpace {
      */
     public void calculerVectorSpace()
     {
-        // Bench
-        this.temps = new Date();
-        tps2 = temps.getTime();
-        System.out.println("Bench : "+(tps2-tps1)+" milliseconds. (Fin ajout doc, debut calcul vector");
+        bench("Fin de l'ajout des documents");
         
         // On récupère le contenu de tous les documents 
         StringBuffer tousLesDocuments = new StringBuffer();
         for (int i = 0; i < this.listeDocument.size(); i++) {
             tousLesDocuments.append(this.listeDocument.get(i));
         }
+        
+        bench("Fin de la concaténation des documents");
         
         // On mets dans un tableau la liste des mots
         String[] tableau    = (tousLesDocuments.toString().toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
@@ -88,10 +88,7 @@ public class VectorSpace {
         this.espaceMot = new Vector (listeMot.size());
         this.espaceMot.copyInto(listeMot.toArray());
         
-        // Bench
-        this.temps = new Date();
-        tps3 = temps.getTime();
-        System.out.println("Bench : "+(tps3-tps2)+" milliseconds. (fin calcul vector, debut vecteur document");
+        bench("Fin de la création de l'espace vectoriel");
         
         // On crée un recepteur pour les vecteurs des documents
         this.listeVecteur = new ArrayList(this.listeDocument.size());
@@ -100,11 +97,7 @@ public class VectorSpace {
         for (int i = 0; i < this.listeDocument.size(); i++) {
             this.listeVecteur.add(i, creerVecteur( (String) this.listeDocument.get(i)));
         }
-        
-        // Bench
-        temps = new Date();
-        tps4 = temps.getTime();
-        System.out.println("Bench : "+(tps4-tps3)+" milliseconds. (Fin calcul vector");
+        bench("Fin de la création des vecteurs documents");
     }
     
     /**
@@ -202,8 +195,16 @@ public class VectorSpace {
         
         // On parcours la liste des vecteurs de documents
         for (int i = 0; i < this.listeDocument.size(); i++) {
-            cosinus(vecteurRequete, (int[])this.listeVecteur.get(i));
-            //System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosinus(vecteurRequete, (int[])this.listeVecteur.elementAt(i)));
+            double cosVect = cosinus(vecteurRequete, (int[])this.listeVecteur.get(i));
+            //System.out.println("Cosinus entre la recherche et le document "+i+" : "+cosVect);
         }
+        bench("Fin de la requete");
+    }
+    
+    public void bench(String texte)
+    {
+        this.temps = new Date();
+        long tps = this.temps.getTime();
+        System.out.println("[Bench] : "+(tps-this.tempsPrecedent)+" - "+texte);
     }
 }
