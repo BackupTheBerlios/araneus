@@ -44,38 +44,6 @@ public class Adresse{
     private String adresseSite;
     private String page;
     
-    public Adresse(String adresse)
-    {
-        this.adresseSite = adresse;
-    }
-    
-    /**
-     * Télécharge et retourne le code HTML de l'adresse courante. 
-     *
-     * @return      Le code HTML de l'adresse courante
-     */
-    public String telecharger()
-    {
-        try {
-            URL yahoo = new URL(this.adresseSite);
-            URLConnection yc = yahoo.openConnection();
-            BufferedReader in = new BufferedReader(
-                                    new InputStreamReader(
-                                    yc.getInputStream()));
-            String inputLine;
-            
-    
-            while ((inputLine = in.readLine()) != null) 
-                this.page += inputLine+"\n";
-            in.close();
-            
-            
-        } catch (Exception e) {
-            System.out.println("Erreur lors du telechargement");
-        }
-        return this.page;
-    }
-    
     /**
      * Récupère l'adresse encapsuler dans l'objet courant 
      *
@@ -90,4 +58,36 @@ public class Adresse{
     {
         return "Adresse : "+this.adresseSite;
     }
+
+	public Adresse(String adresse)
+	{
+	    this.adresseSite = adresse;
+	}
+    
+    /**
+	 * Télécharge et retourne le code HTML de l'adresse courante. 
+	 *
+	 * @return      Le code HTML de l'adresse courante
+	 */
+	public String telecharger()
+	{
+	    try {
+	        URL yahoo = new URL(this.adresseSite);
+	        URLConnection yc = yahoo.openConnection();
+	        BufferedReader in = new BufferedReader(
+	                                new InputStreamReader(
+	                                yc.getInputStream()));
+	        String inputLine;
+	        
+	
+	        while ((inputLine = in.readLine()) != null) 
+	            this.page += inputLine+"\n";
+	        in.close();
+	        
+	        
+	    } catch (Exception e) {
+	        System.out.println("Erreur lors du telechargement");
+	    }
+	    return this.page;
+	}
 }

@@ -26,7 +26,7 @@ public class TestVector
         Date temps = new Date();
         long debut = temps.getTime();
         int x = 0;
-        for (x=0; x <= 1000; x++) {
+        for (x=0; x < 1000; x++) {
             // On définit un certain nombres de documents
             test.ajouterDocument("Il s'agit d'un système assez ésotérique permettant de mesurer la qualité d'une équipe de développeurs.");
             test.ajouterDocument("Et avec tout le temps que vous y gagnez, vous pouvez faire plein d'autres choses en même temps.");

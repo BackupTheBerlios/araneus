@@ -104,6 +104,9 @@ public class VectorSpace {
      *  Permet de vérifier que le mot n'est pas un mot courant
      *  Le test est pour le moment valide que pour les mots de la langue
      *  française
+     *
+     *  @param  mot Le mot devant être définit comme courant ou non.
+     *  @return     Un booléen permettant de savoir si le mot est courant
      */ 
     private boolean estMotCourant(String mot)
     {
@@ -178,6 +181,10 @@ public class VectorSpace {
         return Math.sqrt(somme);
     }
     
+    /**
+     *  Calcul le cosinus entre 2 vecteurs. Cela permet de connaitre le
+     *  niveau de similitude entre les 2 vecteurs passés en paramètre
+     */
     public double cosinus(int[] v1, int[] v2)
     {
         // cosinus = (V1.V2) / (||V1|| . ||V2||)
