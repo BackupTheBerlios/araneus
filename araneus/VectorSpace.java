@@ -27,7 +27,7 @@ import java.util.Vector;
  * Essaie d'implementation de l'article sur "Vector Space"
  *
  * @author  Fabien SCHWOB
- * @version 0.1
+ * @version 0.1.1
  */
 public class VectorSpace {
     
@@ -35,25 +35,39 @@ public class VectorSpace {
     private Vector listeDocument;
     
     public VectorSpace() {
+        // On initialise le vecteur contenant la liste des documents
+        this.listeDocument = new Vector(50);
+    }
 
-        // On définit un certain nombres de documents
-        String doc1 = "Il s'agit d'un système assez ésotérique permettant de mesurer la qualité d'une équipe de développeurs.";
-        String doc2 = "Et avec tout le temps que vous y gagnez, vous pouvez faire plein d'autres choses en même temps.";
-        String doc3 = "le le le Ils réalisèrent que les chefs de projet avaient tant insisté sur le respect du \"planning\" que les programmeurs se contentaient de se dépêcher en écrivant du très mauvais code, parce que la phase de  correction ne faisait pas partie intégrante du planning.";
-
+    /**
+     * Permet d'ajouter un document à l'espace vectoriel
+     */
+    public void ajouterDocument(String document)
+    {
+        this.listeDocument.addElement(document);
+    }
+    
+    /**
+     * Calcul la liste des mots différents dans l'espace vectoriel
+     */
+    public void calculerVectorSpace()
+    {
+        // On récupère le contenu de tous les documents 
+        String tousLesDocuments = "";
+        for (int i = 0; i < this.listeDocument.size(); i++) {
+            tousLesDocuments += this.listeDocument.elementAt(i);
+        }
+        
         // On mets dans un tableau la liste des mots
-        String[] tableau    = ((doc1 + doc2 + doc3).toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
-        
-        //String[] tab = trierAplha(tableau);
-        
-        
+        String[] tableau    = (tousLesDocuments.toLowerCase()).split("(\\s+|[ ,?.;:/!']+)");
+      
         // On crée un nouvel objet de type Vector
         Vector listeMot = new Vector();
 
         // On parcours la liste des mots de la liste
         for (int i = 0; i < tableau.length; i++) {
             // Si le mot n'existe pas encore dans le Vector, et qu'il
-            //n'est pas un mot "stop" on l'ajoute
+            // n'est pas un mot courant on l'ajoute
             if (!estMotCourant(tableau[i])) {
                 if (!listeMot.contains(tableau[i]))
                 {
@@ -61,24 +75,14 @@ public class VectorSpace {
                 }
             }
         }
-        this.espaceMot = listeMot;
-        // On affiche la liste des éléments du Vector
-        for (int i = 0; i < listeMot.size(); i++) {
-            System.out.println(listeMot.elementAt(i));
-        }
-        System.out.println("--- \n"+listeMot.size()+" mots");
+        this.espaceMot = listeMot;        
     }
     
-    public void ajouterDocument()
-    {
-        
-    }
-    
-    public void calculerVectorSpace()
-    {
-            
-    }
-    
+    /**
+     *  Permet de vérifier que le mot n'est pas un mot courant
+     *  Le test est pour le moment valide que pour les mots de la langue
+     *  française
+     */ 
     private boolean estMotCourant(String mot)
     {
         // On définit les "stop word"
@@ -122,6 +126,10 @@ public class VectorSpace {
                 
     }
     
+    /**
+     *  Permet de créer un vecteur dans l'espace vectoriel à partir
+     *  d'une chaine de caractères.
+     */
     public int[] creerVecteur(String chaine)
     {
         int[] document = new int[this.espaceMot.size()];
